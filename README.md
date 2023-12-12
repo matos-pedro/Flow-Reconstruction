@@ -129,7 +129,7 @@ Já o método de Reamostragem, como definido, apresentou mediana bem próxima de
 ![Alt text](Comprativo.png)
 Figura 5: Comparativo dos desvios quadráticos para os casos Padrão e de Reamostragem. 
 
-No geral, os valores de Desvio Quadrático foram baixos, implicando em um desvio quadrático médio de 2,5.10$^{-4}$ em um campo de módulo de velocidade que foi normalizado para ocorrer entre 0 e 1.   
+No geral, os valores de Desvio Quadrático foram baixos, implicando em um desvio quadrático médio de 2,5.$10^{-4}$ em um campo de módulo de velocidade que foi normalizado para ocorrer entre 0 e 1.   
 
 ### Discussão
 
