@@ -1,12 +1,13 @@
 ## Reconstrução de Escoamento
 
 ### Objetivo
-Explorar o conceito de "reconstrução de escoamento" em um problema bidimensional (2D) a partir de informações coletadas pontualmente. Simplificando, a pergunta a ser respondida, é: é possível reconstruir um campo 2D de pressão a partir de, por eemplo, apenas três medidas de pressão? 
+Explorar o conceito de "reconstrução de escoamento" em um problema bidimensional (2D) a partir de informações coletadas pontualmente. Simplificando, a pergunta a ser respondida, é: é possível reconstruir um campo 2D de pressão a partir de, por exemplo, apenas três medidas de pressão? 
 
-O conceito se baseia frequentemente em modelos de ordem reduzida, como DMD ou POD, que compartilham o objetivo de reduzir a dinâmica do escoamento a apenas alguns modos, de forma que cada mapa de um mensurável qualquer não passe de uma função combinação de alguns poucos mapas fixos e calculáveis. Neste caso, a reconstrução limita-se a identificar os coeficientes associados à combinação linear. No mais, com a evolução das técnicas de inteligencia artificial, novos métodos de reconstrução tem sido estudados.
+Em suma, queremos estimar o campo de mensuráveis $\mathbf{x} \in \mathbb{R}^N$ a partir de um conjunto menor de observações $\mathbf{m} \in \mathbb{R}^{Np}$, tal que $Np$ é muito menor que $N$. Usualmente, as observações $\mathbf{m}$ são realizadas em um campo bem definido $\mathbf{x}$, de modo que o processo de medida corresponde à relação $\mathbf{m} = F(\mathbf{x})$. Nosso objetivo, então, é estabelecer um método para estimar a inversa de $F$, $\widehat{F^{-1}}$, para reconstruir o campo de mensuráveis através de $\mathbf{x} = \widehat{F^{-1}}(\mathbf{m})$. 
 
-Aqui, opta-se pela abordagem mais simples e ainda eficiente, a Bayesiana. Utiliza-se do teorema de Bayes para reconstruir um escoamento simples 2D,incompressível, de número de Reynolds de 250 e estabelecido em torno de um cilindro. Devido à natureza do problema, definimos o mensurável 'módulo da velocidade', $|v*|$ como parâmetro de interesse. 
+O conceito de reconstrução se baseia frequentemente em modelos de ordem reduzida, como DMD ou POD, que compartilham o objetivo de reduzir a dinâmica do escoamento a apenas alguns modos, de forma que cada mapa de um mensurável qualquer não passe de uma função combinação de alguns poucos mapas fixos e calculáveis. Neste caso, a reconstrução limita-se a identificar os coeficientes associados à combinação linear. No mais, com a evolução das técnicas de inteligencia artificial é possível se "aprender" a relação entre $\mathbf{x}$ e $\mathbf{m}$ para estimativa de $\widehat{F^{-1}}$ e, levando a inúmeros novos métodos de reconstrução.
 
+Aqui, opta-se pela abordagem mais simples e ainda eficiente, a Bayesiana. Utiliza-se do teorema de Bayes para reconstruir um escoamento simples 2D,incompressível, de número de Reynolds de 250 e estabelecido em torno de um cilindro. Devido à natureza do problema, definimos o mensurável 'módulo da velocidade', $|v^*|$, como parâmetro de interesse. 
 
 ### O Escoamento
 
@@ -25,16 +26,16 @@ A aplicação do método consistui de algumas etapas, que seguem.
 #### Normalização
 Os dados foram normalizados para que tenhamos uma interpretação mais segura dos resultados e evitar que número muito pequenos "se percam" na manipulação dos dados. 
 
-$V \leftarrow [V - min(V)]/max(V)$
+$v^* \leftarrow [v - min(v)]/max(v)$
 
 É importante afirmar que LBM parametriza a simulação e tem como parâmetro de controle o número Reynolds, e que a velocidade inicial parametrizada aqui utilizada é de $u_0^* = 0,04$ unidades. 
 
 
 #### Duplicação dos dados
-Adicionamos aos dados originais os mesmos dados iniciais acrescidos de ruído, com relação sinal ruído RRS de 50. O objetivo desse procedimento é aumentar o volume da base de dados e torná-lo robusto a ruídos, caso queiramos reconstruir o mapa de $|v*|$ a partir de um conjunto de dados ruidosos.
+Adicionamos aos dados originais os mesmos dados iniciais acrescidos de ruído, com relação sinal ruído RRS de 50. O objetivo desse procedimento é aumentar o volume da base de dados e torná-lo robusto a ruídos, caso queiramos reconstruir o mapa de $|v^*|$ a partir de um conjunto de dados ruidosos.
 
 #### Aplicação do Teorema de Bayes
-Queremos estimar cerca de 8000 valores a partir de um conjunto de $\{  m_1,...,m_{Np}  \}$ conhecido que pode contar, por exemplo, com apenas $Np = 5$ medidas. Aparentemente mal posto, o problema tem complexidade reduzida ao assumirmos a existência de coerência espaço-temporal entre as 8000 instâncias. Isso restringe o espaço de valores, dados $\{ m\}$.
+Queremos estimar cerca de $N = 8000$ valores a partir de um conjunto de $\{  m_1,...,m_{Np}  \}$ conhecido que pode contar, por exemplo, com apenas $Np = 5$ medidas. Aparentemente mal posto, o problema tem complexidade reduzida ao assumirmos a existência de coerência espaço-temporal entre as 8000 instâncias. Isso restringe o espaço de valores, dados $\{ m\}$.
 
 
 O problema tem natureza condicional já que desejamos fazer um total de $8000-Np$ estimativas $x_i$ condicionadas às medidas - reais - especificadas pelo conjunto de medidas $\{ m \}$. Segundo o teorema de Bayes, podemos afirmar que a probabilidade condicionada a $\{ m \}$ de um valor $x_i'$ ocorrer para a posição $x_i$ é
